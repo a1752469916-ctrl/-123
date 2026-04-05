@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Germanistik — 德语学术追踪</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#1a1814;--paper:#f5f0e8;--cream:#ede8dc;--rule:#c8c2b4;
+  --red:#b8341b;--gold:#8a6e3a;--teal:#2a6860;--muted:#7a7468;
+  --SF:'DM Serif Display',Georgia,serif;
+  --SB:'Noto Serif SC','Songti SC',serif;
+  --MO:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--SB);font-size:15px;line-height:1.75}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.5}
+.mast{border-bottom:2px solid var(--ink);padding:0 40px;position:sticky;top:0;background:var(--paper);z-index:100}
+.mast-in{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.logo{font-family:var(--SF);font-size:20px;letter-spacing:.02em}
+.logo em{color:var(--red);font-style:italic}
+nav{display:flex;gap:28px}
+nav a{font-family:var(--MO);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-decoration:none;cursor:pointer;transition:color .15s}
+nav a:hover,nav a.on{color:var(--ink)}
+.hdate{font-family:var(--MO);font-size:10px;color:var(--muted)}
+.wrap{max-width:1240px;margin:0 auto;padding:36px 40px;display:grid;grid-template-columns:1fr 300px;gap:56px;align-items:start}
+/* report */
+.rpt{grid-column:1/-1;border:1.5px solid var(--ink);background:var(--cream);display:grid;grid-template-columns:160px 1fr;position:relative;margin-bottom:4px}
+.rpt::before{content:'Tagesbericht · 每日学术动态';position:absolute;top:-9px;left:20px;background:var(--paper);padding:0 8px;font-family:var(--MO);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.rpt-date{border-right:1px solid var(--rule);padding:24px 20px;display:flex;flex-direction:column;justify-content:space-between}
+.rday{font-family:var(--SF);font-size:64px;line-height:1}
+.rmon{font-family:var(--MO);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px}
+.rcounts{display:flex;gap:20px;margin-top:16px}
+.cnt{display:flex;flex-direction:column;gap:1px}
+.cn{font-family:var(--MO);font-size:20px;font-weight:500;color:var(--red);line-height:1}
+.cl{font-family:var(--MO);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.rpt-body{padding:24px 28px}
+.rhl{font-family:var(--SF);font-size:19px;line-height:1.3;margin-bottom:10px}
+.rsum{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:14px}
+.tpills{display:flex;flex-wrap:wrap;gap:6px}
+.tp{font-family:var(--MO);font-size:10px;letter-spacing:.04em;padding:3px 10px;border:1px solid var(--rule);background:var(--paper);cursor:pointer;transition:all .15s}
+.tp:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tp.up{border-color:var(--red);color:var(--red)}
+.tp.up:hover{background:var(--red);color:var(--paper)}
+/* section */
+.sh{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1.5px solid var(--ink);padding-bottom:8px;margin-bottom:20px}
+.st{font-family:var(--SF);font-size:18px}
+.sm{font-family:var(--MO);font-size:10px;letter-spacing:.08em;color:var(--muted)}
+/* filter */
+.fb{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.fbn{font-family:var(--MO);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:4px 12px;border:1px solid var(--rule);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.fbn:hover{border-color:var(--ink);color:var(--ink)}
+.fbn.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+/* card */
+.card{border-bottom:1px solid var(--rule);padding:22px 0;display:grid;grid-template-columns:40px 1fr;gap:16px;cursor:pointer;opacity:0;transform:translateY(10px);animation:fu .35s forwards;transition:padding .1s,margin .1s,background .1s}
+.card:hover{background:var(--cream);padding:22px 16px;margin:0 -16px}
+@keyframes fu{to{opacity:1;transform:translateY(0)}}
+.pnum{font-family:var(--MO);font-size:11px;color:#c8c2b4;padding-top:3px;text-align:right}
+.pmr{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.pj{font-family:var(--MO);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.py{font-family:var(--MO);font-size:10px;color:var(--muted)}
+.nb{font-family:var(--MO);font-size:9px;border:1px solid var(--red);color:var(--red);padding:1px 6px;letter-spacing:.06em}
+.pt{font-family:var(--SF);font-size:17px;line-height:1.3;margin-bottom:4px}
+.ptde{font-family:var(--SF);font-style:italic;font-size:13px;color:var(--muted);margin-bottom:6px}
+.pau{font-family:var(--MO);font-size:10px;color:var(--muted);margin-bottom:10px;letter-spacing:.03em}
+.pab{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* positioning box */
+.posbox{border-left:2px solid var(--teal);padding:10px 14px;background:linear-gradient(to right,rgba(42,104,96,.05),transparent);margin-bottom:12px}
+.poshdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.poslbl{font-family:var(--MO);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal)}
+.possc{display:flex;gap:10px;margin-left:auto}
+.psci{display:flex;flex-direction:column;align-items:center;gap:1px}
+.pscn{font-family:var(--MO);font-size:12px;font-weight:500;display:flex;gap:2px}
+.pscl{font-family:var(--MO);font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--rule);display:inline-block}
+.dot.on{background:var(--ink)}
+.dot.on.r{background:var(--red)}
+.coords{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.cb{font-family:var(--MO);font-size:9px;letter-spacing:.05em;padding:2px 8px;border:1px solid currentColor}
+.cb.dom{color:var(--teal);border-color:var(--teal);background:rgba(42,104,96,.06)}
+.cb.sub{color:var(--gold);border-color:var(--gold);background:rgba(138,110,58,.06)}
+.cb.sta{color:var(--muted);border-color:var(--rule)}
+.cb.sta.fr{color:var(--red);border-color:var(--red);background:rgba(184,52,27,.06)}
+.postext{font-size:13px;line-height:1.65;color:var(--ink)}
+.postext strong{color:var(--teal);font-weight:600}
+.ptags{display:flex;gap:5px;flex-wrap:wrap}
+.ptag{font-family:var(--MO);font-size:9px;padding:2px 7px;background:var(--cream);color:var(--muted);border:1px solid var(--rule)}
+.ptag.par{border-color:var(--gold);color:var(--gold);background:rgba(138,110,58,.05)}
+/* sidebar */
+.sb{border:1px solid var(--rule);padding:18px;margin-bottom:20px}
+.sbt{font-family:var(--MO);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:14px}
+.plist{display:flex;flex-direction:column;gap:9px}
+.prow-nr{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+.ppct{font-family:var(--MO);font-size:10px;color:var(--muted)}
+.btrack{height:2px;background:var(--rule);border-radius:2px}
+.bfill{height:2px;border-radius:2px;transition:width 1.2s ease;background:var(--ink)}
+.bfill.top{background:var(--teal)}
+.jrow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--rule);font-size:13px}
+.jrow:last-child{border-bottom:none;padding-bottom:0}
+.jcnt{font-family:var(--MO);font-size:10px;color:var(--red)}
+.tbars{display:flex;gap:4px;align-items:flex-end;height:44px}
+.tbar{flex:1;background:var(--rule);border-radius:1px;cursor:pointer;transition:background .15s}
+.tbar:hover,.tbar.today{background:var(--ink)}
+.tblbls{display:flex;gap:4px;margin-top:4px}
+.tbl{flex:1;font-family:var(--MO);font-size:8px;color:var(--muted);text-align:center}
+.ki{padding:10px 0;border-bottom:1px solid var(--rule);cursor:pointer}
+.ki:last-child{border-bottom:none;padding-bottom:0}
+.ki:hover .kt{color:var(--teal)}
+.ktag{font-family:var(--MO);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:2px}
+.kt{font-family:var(--SF);font-size:14px;line-height:1.3;margin-bottom:4px;transition:color .15s}
+.kd{font-size:12px;color:var(--muted);line-height:1.6}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(26,24,20,.72);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(2px)}
+.ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--paper);max-width:700px;width:92vw;max-height:84vh;overflow-y:auto;padding:40px;position:relative;transform:translateY(16px);transition:transform .2s}
+.ov.open .modal{transform:translateY(0)}
+.mc{position:absolute;top:14px;right:14px;font-family:var(--MO);font-size:10px;text-transform:uppercase;letter-spacing:.08em;background:none;border:1px solid var(--rule);padding:4px 10px;cursor:pointer;color:var(--muted)}
+.mc:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.mj{font-family:var(--MO);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--red);margin-bottom:6px}
+.mtt{font-family:var(--SF);font-size:24px;line-height:1.25;margin-bottom:6px}
+.mttde{font-family:var(--SF);font-style:italic;font-size:14px;color:var(--muted);margin-bottom:14px}
+.mdiv{border:none;border-top:1px solid var(--rule);margin:14px 0}
+.mmeta{font-family:var(--MO);font-size:11px;color:var(--muted);display:flex;gap:20px;flex-wrap:wrap;padding:10px 0}
+.msec{font-family:var(--MO);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:16px 0 6px}
+.mabs{font-size:14px;line-height:1.8}
+.mpanel{border:1.5px solid var(--teal);padding:18px 20px;margin-top:20px;position:relative}
+.mpanel::before{content:'理论定位分析';position:absolute;top:-9px;left:14px;background:var(--paper);padding:0 6px;font-family:var(--MO);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.mscrow{display:flex;gap:28px;margin-bottom:14px}
+.msci{display:flex;flex-direction:column;gap:3px}
+.mscl{font-family:var(--MO);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.mscd{display:flex;gap:3px;align-items:center}
+.mrq{font-family:var(--MO);font-size:11px;color:var(--muted);border-left:2px solid var(--rule);padding-left:10px;margin-bottom:12px;line-height:1.6}
+.mpos{font-size:13px;line-height:1.75}
+.mpos strong{color:var(--teal);font-weight:600}
+.mfw{margin-top:10px;font-size:12px;color:var(--muted);font-style:italic;border-top:1px dashed var(--rule);padding-top:8px}
+.mcnki{display:inline-block;margin-top:16px;font-family:var(--MO);font-size:10px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:8px 18px;border:1.5px solid var(--ink);color:var(--ink);transition:all .15s}
+.mcnki:hover{background:var(--ink);color:var(--paper)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--rule)}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="mast-in">
+    <div class="logo">Germanistik <em>学术追踪</em></div>
+    <nav>
+      <a class="on" onclick="nav(this)">论文速览</a>
+      <a onclick="nav(this)">每日报告</a>
+      <a onclick="nav(this)">研究范式库</a>
+    </nav>
+    <div class="hdate" id="hd"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="rpt">
+    <div class="rpt-date">
+      <div><div class="rday" id="rd"></div><div class="rmon" id="rm"></div></div>
+      <div class="rcounts">
+        <div class="cnt"><span class="cn">6</span><span class="cl">新论文</span></div>
+        <div class="cnt"><span class="cn">3</span><span class="cl">高价值</span></div>
+        <div class="cnt"><span class="cn">3</span><span class="cl">追踪期刊</span></div>
+      </div>
+    </div>
+    <div class="rpt-body">
+      <div class="rhl">Kulturtechnik在文学分析中的本土化探索：近期国内德语研究的结构性转向</div>
+      <div class="rsum">今日收录6篇，覆盖《德语人文研究》《德国研究》《德文月刊》。范式层面，文化技术理论（Siegert/Kittler路径）与文化记忆研究（Assmann路径）形成竞争性并列关系，前者侧重物质性与操作性，后者侧重意义建构与身份政治。值得关注的是，有论文开始将媒介物质性框架引入汉德比较文学，这是一个尚未命名但已可辨认的新兴节点。语言学方向本周以认知构式语法为主。</div>
+      <div class="tpills">
+        <span class="tp up">Kulturtechnik ↑↑</span>
+        <span class="tp up">媒介物质性 ↑</span>
+        <span class="tp">文化记忆</span>
+        <span class="tp">身体政治</span>
+        <span class="tp">构式语法</span>
+        <span class="tp">接受美学</span>
+        <span class="tp">后殖民批评</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="sh"><div class="st">论文速览</div><div class="sm">按综合价值排序</div></div>
+    <div class="fb">
+      <button class="fbn on" onclick="sf(this,'all')">全部</button>
+      <button class="fbn" onclick="sf(this,'new')">本周新收</button>
+      <button class="fbn" onclick="sf(this,'lit')">文学研究</button>
+      <button class="fbn" onclick="sf(this,'kultur')">文化学</button>
+      <button class="fbn" onclick="sf(this,'ling')">语言学</button>
+      <button class="fbn" onclick="sf(this,'compare')">比较与翻译</button>
+      <button class="fbn" onclick="sf(this,'archive')">历史补录</button>
+    </div>
+    <div id="pl"></div>
+  </main>
+
+  <aside>
+    <div class="sb">
+      <div class="sbt">本周收录 / 按日</div>
+      <div class="tbars" id="tb"></div>
+      <div class="tblbls" id="tl"></div>
+    </div>
+    <div class="sb">
+      <div class="sbt">研究范式分布 / 近30天</div>
+      <div class="plist" id="prl"></div>
+    </div>
+    <div class="sb">
+      <div class="sbt">追踪期刊</div>
+      <div class="jrow"><span>《德语人文研究》</span><span class="jcnt">28篇</span></div>
+      <div class="jrow"><span>《德国研究》</span><span class="jcnt">21篇</span></div>
+      <div class="jrow"><span>《德文月刊》</span><span class="jcnt">14篇</span></div>
+    </div>
+    <div class="sb">
+      <div class="sbt">今日范式介绍</div>
+      <div class="ki">
+        <div class="ktag">新兴 · 文化学</div>
+        <div class="kt">媒介考古学（Medienarchäologie）</div>
+        <div class="kd">由Huhtamo与Parikka系统化的方法论，通过挖掘被遗忘的媒介技术史来颠覆线性技术进步叙事。Kittler的硬件决定论是其理论前身。国内德语学界正处于引介阶段，与Kulturtechnik研究形成共振……</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="ov" id="ov" onclick="clov(event)">
+  <div class="modal">
+    <button class="mc" onclick="document.getElementById('ov').classList.remove('open')">关闭 ×</button>
+    <div id="mb"></div>
+  </div>
+</div>
+
+<script>
+const now=new Date();
+document.getElementById('hd').textContent=now.toLocaleDateString('de-DE',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+document.getElementById('rd').textContent=now.getDate();
+document.getElementById('rm').textContent=now.toLocaleDateString('zh-CN',{year:'numeric',month:'long'});
+
+const DATA=[
+  {id:'p1',journal:'德语人文研究',year:2024,issue:'第2期',isNew:true,
+   title:'净化与抹除：《钢琴教师》中身体清洁作为文化技术的运作机制',
+   titleDe:'Reinigung und Auslöschung: Körperreinigung als Kulturtechnik in Jelineks "Die Klavierspielerin"',
+   authors:'张晓明（浙江大学）',
+   abstract:'本文借助Bernhard Siegert的文化技术理论，分析耶利内克小说《钢琴教师》中身体清洁行为的多重运作维度。清洁在文本中并非单纯卫生行为，而是同时承载道德净化、仪式性秩序恢复与具身记忆消除三重功能。文章论证，当这一文化技术在父权结构内系统性失效时，女性主体所遭受的结构性损伤方才得以显现。',
+   cat:['lit','kultur'],
+   paradigm_label:'文化技术理论（Kulturtechnik）',
+   paradigm_tags:['文化技术理论','女性主义批评','身体研究'],
+   dp:{domain:'文学研究',subdomain:'德语现当代文学',status:'前沿探索'},
+   rq:'身体清洁作为文化技术在父权秩序中如何运作，其失效如何暴露女性主体的结构性损伤？',
+   pos:'本文将Siegert的文化技术理论（操作性、物质性、规训性）直接落地于耶利内克文本，分析层次为"道德净化—仪式秩序—具身记忆"三重向度。在国内德语文学研究谱系中，这属于<strong>Kulturtechnik理论的文学实践应用</strong>前沿，与女性主义身体研究形成跨范式接合。区别于单纯的主题分析，本文以技术运作逻辑为解读轴心，是方法论层面的范式示范。Kittler媒介物质性维度的讨论尚有拓展空间。',
+   fw:'研究耶利内克或Kulturtechnik理论的读者；关注身体政治与文化技术交叉方向的研究者。',
+   vs:5,is:4,vh:'将Kulturtechnik落地为可操作的文本分析框架，方法论示范价值高'},
+  {id:'p2',journal:'德国研究',year:2024,issue:'第1期',isNew:true,
+   title:'扬·阿斯曼记忆理论在中国德语文学研究中的接受与转化（2000—2023）',
+   titleDe:null,
+   authors:'李思远（北京外国语大学）、王芳（复旦大学）',
+   abstract:'本文系统梳理扬·阿斯曼文化记忆理论在2000—2023年间国内德语文学研究中的接受轨迹，归纳出"概念移植—方法借用—本土改造"三阶段演化路径，并以施林克、塞巴尔德研究为案例分析该理论在汉语学术语境中的变形机制。',
+   cat:['lit','compare'],
+   paradigm_label:'文化记忆研究 + 学术史梳理',
+   paradigm_tags:['文化记忆研究','接受研究','学术史'],
+   dp:{domain:'文学研究',subdomain:'德语文学理论接受史',status:'主流方向'},
+   rq:'Assmann文化记忆理论在中国德语研究语境中经历了怎样的变形与本土化过程？',
+   pos:'本文属于<strong>学术史/接受研究</strong>范式，将记忆理论本身作为研究对象而非分析工具。在德语文学研究学科内部，这类元批评视角处于主流方向，三阶段框架具有一定概括力，但受综述性质所限，理论生产性有限。对于需要把握领域知识谱系的研究者而言，其参考文献列表本身即具文献导图价值。',
+   fw:'初入文化记忆研究领域的研究生；关注Assmann理论本土化问题的学者。',
+   vs:4,is:3,vh:'国内Assmann接受史的系统性文献导图，是进入该领域的快速定向读物'},
+  {id:'p3',journal:'德语人文研究',year:2024,issue:'第1期',isNew:true,
+   title:'塞巴尔德《奥斯特利茨》中的摄影记忆与时间性建构',
+   titleDe:null,
+   authors:'刘雨晴（南京大学）',
+   abstract:'本文聚焦塞巴尔德小说《奥斯特利茨》中摄影图像的叙事功能，结合阿莱达·阿斯曼的记忆场所理论与苏珊·桑塔格的摄影批评，论证摄影如何同时充当创伤记忆的"容器"与"触发器"，以及这一双重机制如何建构小说独特的时间异质性。',
+   cat:['lit'],
+   paradigm_label:'文化记忆研究 + 图像研究（Bildwissenschaft）',
+   paradigm_tags:['文化记忆研究','图像研究','创伤理论'],
+   dp:{domain:'文学研究',subdomain:'德语当代文学与记忆叙事',status:'前沿探索'},
+   rq:'摄影图像在塞巴尔德叙事中如何实现"容器—触发器"双重功能，并建构非线性时间性？',
+   pos:'本文以<strong>Aleida Assmann记忆场所理论</strong>为主框架，与Sontag摄影批评进行跨学科对接。在图像与文学的交叉研究领域处于前沿探索位置。"容器—触发器"这对分析概念具有较强生产力，可迁移至其他以视觉材料为核心的文本研究。与Bildwissenschaft（图像科学）的深度对话是本文尚未充分展开的空间。',
+   fw:'研究塞巴尔德或记忆叙事的读者；关注文学与图像/摄影交叉研究方向的学者。',
+   vs:5,is:5,vh:'记忆理论与图像研究的深度接合，"容器—触发器"框架具有方法论可迁移性'},
+  {id:'p4',journal:'德文月刊',year:2023,issue:'第4期',isNew:false,
+   title:'德语"ver-"前缀动词的认知语义网络：意象图式与概念整合的双重视角',
+   titleDe:'Das kognitive Bedeutungsnetz der "ver-"-Verben im Deutschen',
+   authors:'陈志刚（上海外国语大学）',
+   abstract:'运用认知语义学的意象图式理论和概念整合理论，系统分析德语"ver-"前缀动词的多义网络结构。研究发现"ver-"的原型语义为"偏离正常轨迹"，由此辐射出"错误、过度、变化完成"三条扩展路径，并在语料库数据支撑下量化验证该扩展模式的系统性。',
+   cat:['ling'],
+   paradigm_label:'认知语言学 + 语料库语言学',
+   paradigm_tags:['认知语义学','语料库语言学','词汇语义学'],
+   dp:{domain:'语言学研究',subdomain:'德语词汇语义学',status:'主流方向'},
+   rq:'"ver-"前缀动词的语义扩展遵循怎样的认知规律，意象图式如何制约多义网络的形成？',
+   pos:'本文整合<strong>意象图式理论</strong>（Lakoff/Johnson）与概念整合理论（Fauconnier/Turner），属于认知语义学主流方向，但在德语构词研究中具有方法论示范性。语料库量化验证使传统定性分析获得数据支撑。在德语语言学研究谱系中，词汇认知研究是成熟议题，本文贡献主要在于方法组合的精细化与量化落实。',
+   fw:'研究德语词汇语义学或认知语言学的学者；德语教学研究者可参考其三条扩展路径的教学框架。',
+   vs:4,is:3,vh:'认知路径分析方法组合扎实，三条语义扩展路径对德语教学有直接参考价值'},
+  {id:'p5',journal:'德国研究',year:2023,issue:'第3期',isNew:false,
+   title:'"Kulturtechnik"汉译策略研究：以德国媒介理论核心概念的跨语言传播为例',
+   titleDe:null,
+   authors:'王建华（同济大学）',
+   abstract:'以"Kulturtechnik"一词的汉译实践为切入点，考察德语学术核心概念在汉语语境中的对等建构策略。通过访谈主要译者并分析现有译本，本文提出"语义保留—语境嵌入—注释补偿"三层翻译策略，并讨论其对德国媒介理论汉语传播的影响。',
+   cat:['compare'],
+   paradigm_label:'翻译研究 + 概念史（Begriffsgeschichte）',
+   paradigm_tags:['翻译理论','概念史','学术传播研究'],
+   dp:{domain:'跨学科',subdomain:'学术翻译与概念传播',status:'经典议题'},
+   rq:'"Kulturtechnik"在汉语学术语境中如何实现对等建构，三层翻译策略各有怎样的传播效果？',
+   pos:'本文以<strong>翻译等值理论</strong>为基础，兼涉Koselleck意义上的概念史（词语含义的历史性变迁）。在学科定位上属于翻译研究与学术传播研究的交叉地带，而非文化学或文学研究的核心议题。实用价值大于理论创新，但对于需要在汉语写作中规范使用"Kulturtechnik"译法的研究者具有直接参考意义。',
+   fw:'需要在中文论文中规范引用"Kulturtechnik"等德国理论术语的研究者；翻译策略研究方向的学者。',
+   vs:3,is:2,vh:'解决了汉语写作中Kulturtechnik译法选择的实际痛点，工具价值明确'}
+];
+
+const PARAS=[
+  {n:'文化技术理论 (Kulturtechnik)',p:28,top:true},
+  {n:'文化记忆研究',p:24,top:true},
+  {n:'认知语言学',p:18},
+  {n:'创伤理论 & 图像研究',p:14},
+  {n:'接受美学 / 接受研究',p:9},
+  {n:'翻译研究',p:7}
+];
+
+// Render paradigms
+const prl=document.getElementById('prl');
+PARAS.forEach(p=>{
+  prl.innerHTML+=`<div><div class="prow-nr"><span>${p.n}</span><span class="ppct">${p.p}%</span></div><div class="btrack"><div class="bfill${p.top?' top':''}" style="width:0" data-w="${p.p}%"></div></div></div>`;
+});
+setTimeout(()=>document.querySelectorAll('.bfill').forEach(el=>el.style.width=el.dataset.w),400);
+
+// Trend bars
+const days=['M','Di','Mi','Do','Fr','Sa','So'],cnts=[2,4,3,6,5,4,6];
+const tod=now.getDay()===0?6:now.getDay()-1;
+const tb=document.getElementById('tb'),tl=document.getElementById('tl');
+cnts.forEach((c,i)=>{
+  tb.innerHTML+=`<div class="tbar${i===tod?' today':''}" style="height:${(c/6)*100}%"></div>`;
+  tl.innerHTML+=`<div class="tbl">${days[i]}</div>`;
+});
+
+function dots(n,cls,max=5){
+  return Array.from({length:max},(_,i)=>`<span class="dot${i<n?' on'+(cls?' '+cls:''):''}"></span>`).join('');
+}
+function sc(s){return s==='前沿探索'?'fr':''}
+
+function rp(f){
+  const el=document.getElementById('pl');el.innerHTML='';
+  const fd=f==='all'?DATA:f==='new'?DATA.filter(p=>p.isNew):f==='archive'?DATA.filter(p=>!p.isNew):DATA.filter(p=>p.cat.includes(f));
+  fd.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='card';d.style.animationDelay=i*.07+'s';d.onclick=()=>om(p);
+    d.innerHTML=`<div class="pnum">${String(i+1).padStart(2,'0')}</div>
+    <div>
+      <div class="pmr">
+        <span class="pj">${p.journal}</span>
+        <span class="py">${p.year} · ${p.issue}</span>
+        ${p.isNew?'<span class="nb">NEW</span>':''}
+      </div>
+      <div class="pt">${p.title}</div>
+      ${p.titleDe?`<div class="ptde">${p.titleDe}</div>`:''}
+      <div class="pau">${p.authors}</div>
+      <div class="pab">${p.abstract}</div>
+      <div class="posbox">
+        <div class="poshdr">
+          <span class="poslbl">理论定位</span>
+          <div class="possc">
+            <div class="psci"><div class="pscn">${dots(p.vs,'r')}</div><div class="pscl">综合价值</div></div>
+            <div class="psci"><div class="pscn">${dots(p.is)}</div><div class="pscl">理论创新</div></div>
+          </div>
+        </div>
+        <div class="coords">
+          <span class="cb dom">${p.dp.domain}</span>
+          <span class="cb sub">${p.dp.subdomain}</span>
+          <span class="cb sta ${sc(p.dp.status)}">${p.dp.status}</span>
+        </div>
+        <div class="postext"><strong>${p.paradigm_label}</strong> — ${p.vh}</div>
+      </div>
+      <div class="ptags">${p.paradigm_tags.map(t=>`<span class="ptag par">${t}</span>`).join('')}</div>
+    </div>`;
+    el.appendChild(d);
+  });
+}
+rp('all');
+
+function sf(btn,f){
+  document.querySelectorAll('.fbn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');rp(f);
+}
+
+function om(p){
+  document.getElementById('mb').innerHTML=`
+    <div class="mj">${p.journal} · ${p.year} · ${p.issue}</div>
+    <div class="mtt">${p.title}</div>
+    ${p.titleDe?`<div class="mttde">${p.titleDe}</div>`:''}
+    <hr class="mdiv">
+    <div class="mmeta"><span>作者：${p.authors}</span></div>
+    <div class="msec">摘要</div>
+    <div class="mabs">${p.abstract}</div>
+    <div class="mpanel">
+      <div class="coords" style="margin-bottom:14px">
+        <span class="cb dom">${p.dp.domain}</span>
+        <span class="cb sub">${p.dp.subdomain}</span>
+        <span class="cb sta ${sc(p.dp.status)}">${p.dp.status}</span>
+      </div>
+      <div class="mscrow">
+        <div class="msci"><span class="mscl">综合价值</span><div class="mscd">${dots(p.vs,'r')}</div></div>
+        <div class="msci"><span class="mscl">理论创新</span><div class="mscd">${dots(p.is)}</div></div>
+      </div>
+      <div class="msec" style="margin-top:0;margin-bottom:6px">核心研究问题</div>
+      <div class="mrq">${p.rq}</div>
+      <div class="msec">理论范式定位</div>
+      <div class="mpos">${p.pos}</div>
+      <div class="mfw">适合读者：${p.fw}</div>
+      <a class="mcnki" href="https://kns.cnki.net" target="_blank">→ 前往知网下载全文</a>
+    </div>`;
+  document.getElementById('ov').classList.add('open');
+}
+
+function clov(e){if(e.target.id==='ov')document.getElementById('ov').classList.remove('open');}
+function nav(el){document.querySelectorAll('nav a').forEach(a=>a.classList.remove('on'));el.classList.add('on');}
+</script>
+</body>
+</html>
