@@ -1,0 +1,46 @@
+yamlname: Daily Academic Scrape & Analyze
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  scrape-and-analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 anthropic lxml
+
+      - name: Run scraper
+        run: python scraper/scrape_journals.py
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Run AI analysis
+        run: python scraper/analyze_papers.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "data: daily update $(date -u +'%Y-%m-%d')"
+          git push
