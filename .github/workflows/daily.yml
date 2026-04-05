@@ -28,12 +28,12 @@ jobs:
           pip install requests beautifulsoup4 anthropic lxml
 
       - name: Run scraper
-        run: python scraper/scrape_journals.py
+        run: python scrape_journals.py
         env:
           PYTHONPATH: ${{ github.workspace }}
 
       - name: Run AI analysis
-        run: python scraper/analyze_papers.py
+        run: python analyze_papers.py
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           PYTHONPATH: ${{ github.workspace }}
